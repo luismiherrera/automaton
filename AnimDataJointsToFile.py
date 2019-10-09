@@ -10,6 +10,7 @@ def textOut(*args):
     sampleFrame = int(pm.textField('sampleEveryXFrames', query=True, text=True)) #gets data every X frames
     decimals = int(pm.textField('angleDecimals', query=True, text=True))
     precision = ("{0:."+str(decimals)+"f}")
+    precision2 = ("{0:."+str(0)+"f}")
 
     rotXlocked = False
     rotYlocked = False
@@ -31,15 +32,27 @@ def textOut(*args):
         fileWrite.write(str(frame) + ",")
         pm.currentTime(frame)
         for object in selection:
-            if ((pm.getAttr(object + '.rotateX', lock=True)) == 0):
-                rotationAxis = '.rotateX'
-            if ((pm.getAttr(object + '.rotateY', lock=True)) == 0):
-                rotationAxis = '.rotateY'
-            if ((pm.getAttr(object + '.rotateZ', lock=True)) == 0):
-                rotationAxis = '.rotateZ'
-            print rotationAxis
-            rotateValue = pm.getAttr(object + rotationAxis)
-            DATA.append(float(precision.format(rotateValue)))
+            
+            if(str(object) == 'simple_model_rigged_05:Base_joint_Ctrl'):
+                if ((pm.getAttr(object + '.translateY', lock=True)) == 0):
+                    translationAxis = '.translateY'  
+                    
+                print translationAxis
+                translateValue = pm.getAttr(object + translationAxis)*1000
+                DATA.append(float(precision2.format(translateValue)))
+                
+                   
+            else: 
+                if ((pm.getAttr(object + '.rotateX', lock=True)) == 0):
+                    rotationAxis = '.rotateX'
+                if ((pm.getAttr(object + '.rotateY', lock=True)) == 0):
+                    rotationAxis = '.rotateY'
+                if ((pm.getAttr(object + '.rotateZ', lock=True)) == 0):
+                    rotationAxis = '.rotateZ'
+                
+                print rotationAxis
+                rotateValue = pm.getAttr(object + rotationAxis)
+                DATA.append(float(precision.format(rotateValue)))
         finalDATA = str(DATA).strip('[]')
         fileWrite.write(finalDATA + "\n")
         DATA = []
