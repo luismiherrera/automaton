@@ -33,7 +33,7 @@ def textOut(*args):
         pm.currentTime(frame)
         for object in selection:
             
-            if(str(object) == 'simple_model_rigged_05:Base_joint_Ctrl'):
+            if(str(object) == 'final_model_rigged:hips_Ctrl'):
                 if ((pm.getAttr(object + '.translateY', lock=True)) == 0):
                     translationAxis = '.translateY'  
                     
